@@ -2,7 +2,7 @@
 
 Bro Coffee là một ứng dụng web giúp bạn **theo dõi lịch sử uống cà phê, chi tiêu, địa điểm và thói quen cá nhân**. Dữ liệu được **đồng bộ trực tiếp từ Google Sheets**, hiển thị dưới dạng card trực quan, có filter, thống kê và hỗ trợ dark mode.
 
-# 📸 Screenshot
+## 📸 Hình Ảnh
 
 ![Screenshot](./Screenshot.png)
 
