@@ -6,7 +6,7 @@ export default function Footer() {
         bg-linear-to-r from-stone-50 via-zinc-50 to-stone-100
         dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-950
         border-t border-zinc-200 dark:border-zinc-800
-        py-6
+        py-10
       "
     >
       {/* subtle top glow */}

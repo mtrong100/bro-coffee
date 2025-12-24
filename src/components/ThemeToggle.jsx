@@ -1,34 +1,8 @@
 import { Sun, Moon, Monitor } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useTheme } from "../context/ThemeContext";
 
 export default function ThemeToggle() {
-  const [theme, setTheme] = useState("system");
-
-  useEffect(() => {
-    const storedTheme = localStorage.getItem("theme") || "system";
-    setTheme(storedTheme);
-    applyTheme(storedTheme);
-  }, []);
-
-  const applyTheme = (newTheme) => {
-    const root = window.document.documentElement;
-
-    if (
-      newTheme === "dark" ||
-      (newTheme === "system" &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches)
-    ) {
-      root.classList.add("dark");
-    } else {
-      root.classList.remove("dark");
-    }
-  };
-
-  const handleThemeChange = (newTheme) => {
-    setTheme(newTheme);
-    localStorage.setItem("theme", newTheme);
-    applyTheme(newTheme);
-  };
+  const { theme, setTheme } = useTheme();
 
   const activeClass =
     "bg-linear-to-br from-amber-400 to-amber-500 text-white shadow-md";
@@ -44,7 +18,7 @@ export default function ThemeToggle() {
       "
     >
       <button
-        onClick={() => handleThemeChange("light")}
+        onClick={() => setTheme("light")}
         title="Sáng"
         className={`p-2.5 rounded-lg transition-all ${
           theme === "light" ? activeClass : inactiveClass
@@ -54,7 +28,7 @@ export default function ThemeToggle() {
       </button>
 
       <button
-        onClick={() => handleThemeChange("dark")}
+        onClick={() => setTheme("dark")}
         title="Tối"
         className={`p-2.5 rounded-lg transition-all ${
           theme === "dark" ? activeClass : inactiveClass
@@ -64,7 +38,7 @@ export default function ThemeToggle() {
       </button>
 
       <button
-        onClick={() => handleThemeChange("system")}
+        onClick={() => setTheme("system")}
         title="Hệ thống"
         className={`p-2.5 rounded-lg transition-all ${
           theme === "system" ? activeClass : inactiveClass
