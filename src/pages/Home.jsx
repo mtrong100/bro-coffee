@@ -13,6 +13,8 @@ const parseVND = (value) => Number(String(value).replace(/[^\d]/g, "")) || 0;
 export default function Home() {
   const { data, loading, error, lastUpdated, refetch } = useCoffeeData();
 
+  console.log(data);
+
   const totalRecords = data.length;
 
   const totalAmount = useMemo(
@@ -30,7 +32,7 @@ export default function Home() {
       {/* Main */}
       <main className="container mx-auto px-4 py-6">
         {!loading && !error && (
-          <div className="grid md:grid-cols-3 gap-6 mb-8">
+          <div className="grid md:grid-cols-3 gap-4 mb-5">
             <StatCard
               icon={<Database />}
               label="Tổng bản ghi"

@@ -1,6 +1,7 @@
 // src/layouts/MainLayout.jsx
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import ScrollToTopButton from "../components/ScrollToTopButton";
 
 export default function MainLayout({ children }) {
   return (
@@ -16,6 +17,8 @@ export default function MainLayout({ children }) {
       <Header />
 
       <main className="flex-1">{children}</main>
+
+      <ScrollToTopButton />
 
       <Footer />
     </div>

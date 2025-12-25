@@ -4,6 +4,7 @@ import MainLayout from "./layouts/MainLayout";
 import Home from "./pages/Home";
 import Stats from "./pages/Stats";
 import NotFound from "./pages/NotFound";
+import CoffeeLocation from "./pages/CoffeeLocation";
 
 export default function App() {
   return (
@@ -21,6 +22,14 @@ export default function App() {
         element={
           <MainLayout>
             <Stats />
+          </MainLayout>
+        }
+      />
+      <Route
+        path="/coffee-location"
+        element={
+          <MainLayout>
+            <CoffeeLocation />
           </MainLayout>
         }
       />
