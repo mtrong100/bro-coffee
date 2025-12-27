@@ -8,7 +8,7 @@ import {
 } from "recharts";
 import ChartCard from "./ChartCard";
 
-const COLORS = ["#ef4444", "#f97316", "#facc15", "#4ade80", "#22c55e"];
+const COLORS = ["#ef4444", "#f97316", "#7C00FE", "#00FFDE", "#22c55e"];
 
 const LABELS = {
   "0-1": "Rất tệ (0–1⭐)",

@@ -41,7 +41,7 @@ export function AreaDistributionChart({ data }) {
           <XAxis dataKey="name" tick={{ fontSize: 12 }} interval={0} />
           <YAxis />
           <Tooltip />
-          <Bar dataKey="total" fill="#22c55e" radius={[6, 6, 0, 0]} />
+          <Bar dataKey="total" fill="#f59e0b" radius={[6, 6, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
     </ChartCard>
