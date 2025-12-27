@@ -47,3 +47,5 @@ export function AreaDistributionChart({ data }) {
     </ChartCard>
   );
 }
+
+//fix

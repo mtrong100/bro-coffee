@@ -84,3 +84,5 @@ export function RatingDistributionChart({ data }) {
     </ChartCard>
   );
 }
+
+//fix
