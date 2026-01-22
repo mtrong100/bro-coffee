@@ -1,98 +1,211 @@
 import React from "react";
+import {
+  Database,
+  DollarSign,
+  Zap,
+  TrendingUp,
+  Clock,
+  Calendar,
+  Activity,
+  BarChart,
+} from "lucide-react";
 
 const VARIANT_STYLES = {
   amber: {
-    iconBg: "bg-amber-100 dark:bg-amber-900/40",
-    iconText: "text-amber-700 dark:text-amber-400",
-    glow: "hover:shadow-amber-500/10",
-    border: "border-amber-200/40 dark:border-zinc-700",
+    icon: <Zap className="w-5 h-5" />,
+    iconBg: "bg-gradient-to-br from-amber-500 to-orange-500",
+    iconText: "text-white",
+    glow: "hover:shadow-amber-500/20",
+    border: "border-amber-200/50 dark:border-amber-800/30",
+    gradient: "from-amber-500 to-orange-500",
+    light: "bg-amber-500/5",
   },
-
   blue: {
-    iconBg: "bg-blue-100 dark:bg-blue-900/40",
-    iconText: "text-blue-600 dark:text-blue-400",
-    glow: "hover:shadow-blue-500/10",
-    border: "border-blue-200/30 dark:border-blue-800/30",
+    icon: <Database className="w-5 h-5" />,
+    iconBg: "bg-gradient-to-br from-blue-500 to-cyan-500",
+    iconText: "text-white",
+    glow: "hover:shadow-blue-500/20",
+    border: "border-blue-200/50 dark:border-blue-800/30",
+    gradient: "from-blue-500 to-cyan-500",
+    light: "bg-blue-500/5",
   },
-
   green: {
-    iconBg: "bg-emerald-100 dark:bg-emerald-900/40",
-    iconText: "text-emerald-600 dark:text-emerald-400",
-    glow: "hover:shadow-emerald-500/10",
-    border: "border-emerald-200/30 dark:border-emerald-800/30",
+    icon: <DollarSign className="w-5 h-5" />,
+    iconBg: "bg-gradient-to-br from-emerald-500 to-green-500",
+    iconText: "text-white",
+    glow: "hover:shadow-emerald-500/20",
+    border: "border-emerald-200/50 dark:border-emerald-800/30",
+    gradient: "from-emerald-500 to-green-500",
+    light: "bg-emerald-500/5",
   },
-
   violet: {
-    iconBg: "bg-violet-100 dark:bg-violet-900/40",
-    iconText: "text-violet-600 dark:text-violet-400",
-    glow: "hover:shadow-violet-500/10",
-    border: "border-violet-200/30 dark:border-violet-800/30",
+    icon: <BarChart className="w-5 h-5" />,
+    iconBg: "bg-gradient-to-br from-violet-500 to-purple-500",
+    iconText: "text-white",
+    glow: "hover:shadow-violet-500/20",
+    border: "border-violet-200/50 dark:border-violet-800/30",
+    gradient: "from-violet-500 to-purple-500",
+    light: "bg-violet-500/5",
   },
-
   indigo: {
-    iconBg: "bg-indigo-100 dark:bg-indigo-900/40",
-    iconText: "text-indigo-600 dark:text-indigo-400",
-    glow: "hover:shadow-indigo-500/10",
-    border: "border-indigo-200/30 dark:border-indigo-800/30",
+    icon: <TrendingUp className="w-5 h-5" />,
+    iconBg: "bg-gradient-to-br from-indigo-500 to-blue-500",
+    iconText: "text-white",
+    glow: "hover:shadow-indigo-500/20",
+    border: "border-indigo-200/50 dark:border-indigo-800/30",
+    gradient: "from-indigo-500 to-blue-500",
+    light: "bg-indigo-500/5",
   },
-
   rose: {
-    iconBg: "bg-rose-100 dark:bg-rose-900/40",
-    iconText: "text-rose-600 dark:text-rose-400",
-    glow: "hover:shadow-rose-500/10",
-    border: "border-rose-200/30 dark:border-rose-800/30",
+    icon: <Activity className="w-5 h-5" />,
+    iconBg: "bg-gradient-to-br from-rose-500 to-pink-500",
+    iconText: "text-white",
+    glow: "hover:shadow-rose-500/20",
+    border: "border-rose-200/50 dark:border-rose-800/30",
+    gradient: "from-rose-500 to-pink-500",
+    light: "bg-rose-500/5",
   },
-
   teal: {
-    iconBg: "bg-teal-100 dark:bg-teal-900/40",
-    iconText: "text-teal-600 dark:text-teal-400",
-    glow: "hover:shadow-teal-500/10",
-    border: "border-teal-200/30 dark:border-teal-800/30",
+    icon: <Clock className="w-5 h-5" />,
+    iconBg: "bg-gradient-to-br from-teal-500 to-cyan-500",
+    iconText: "text-white",
+    glow: "hover:shadow-teal-500/20",
+    border: "border-teal-200/50 dark:border-teal-800/30",
+    gradient: "from-teal-500 to-cyan-500",
+    light: "bg-teal-500/5",
   },
 };
 
-export default function StatCard({ icon, label, value, variant = "amber" }) {
-  // ✅ fallback an toàn
+export default function StatCard({
+  icon,
+  label,
+  value,
+  variant = "amber",
+  trend,
+  description,
+}) {
   const style = VARIANT_STYLES[variant] ?? VARIANT_STYLES.amber;
+
+  // Determine icon to use - either passed prop or variant default
+  const IconComponent = icon || style.icon;
 
   return (
     <div
       className={`
         relative overflow-hidden
-        bg-white/70 dark:bg-zinc-900/70 backdrop-blur-sm
+        bg-gradient-to-br from-white/80 to-white/40 dark:from-zinc-900/80 dark:to-zinc-900/40
+        backdrop-blur-xl
         border ${style.border}
         p-6 rounded-2xl
-        flex items-center gap-4
-        transition-all duration-300
-        hover:shadow-xl hover:scale-[1.02] ${style.glow}
+        transition-all duration-500
+        hover:shadow-2xl hover:scale-[1.02] ${style.glow}
         group
+        before:absolute before:inset-0 before:bg-gradient-to-br ${style.light} before:opacity-0 
+        before:group-hover:opacity-100 before:transition-opacity before:duration-500
+        after:absolute after:inset-0 after:border-2 after:border-transparent 
+        after:group-hover:border-white/20 after:rounded-2xl after:transition-all after:duration-500
       `}
     >
-      {/* Gradient hover layer */}
+      {/* Animated gradient overlay */}
       <div
         className="
           absolute inset-0 opacity-0 group-hover:opacity-10
-          transition-opacity duration-300
-          bg-linear-to-br from-amber-400 to-amber-600
+          transition-opacity duration-700
+          bg-gradient-to-br from-white to-transparent
         "
       />
 
+      {/* Accent corner */}
       <div
         className={`
-          relative z-10
-          p-3 rounded-xl
-          ${style.iconBg} ${style.iconText}
-          shadow-lg
+          absolute top-0 right-0 w-16 h-16
+          bg-gradient-to-bl ${style.gradient}
+          opacity-0 group-hover:opacity-5
+          transition-opacity duration-500
+          rounded-bl-2xl
         `}
-      >
-        {icon}
+      />
+
+      <div className="relative z-10 flex items-start gap-5">
+        {/* Icon container with gradient background */}
+        <div
+          className={`
+            relative flex-shrink-0
+            p-3.5 rounded-xl
+            ${style.iconBg} ${style.iconText}
+            shadow-lg
+            transition-all duration-300
+            group-hover:scale-110 group-hover:shadow-xl
+            after:absolute after:inset-0 after:rounded-xl 
+            after:bg-white/10 after:opacity-0 
+            after:group-hover:opacity-100 after:transition-opacity after:duration-300
+          `}
+        >
+          <div className="relative z-10 flex items-center justify-center w-6 h-6">
+            {React.isValidElement(IconComponent) ? (
+              React.cloneElement(IconComponent, {
+                size: 24,
+                strokeWidth: 2.2,
+                className: "w-6 h-6 text-white",
+              })
+            ) : (
+              <IconComponent
+                size={24}
+                strokeWidth={2.2}
+                className="w-6 h-6 text-white"
+              />
+            )}
+          </div>
+
+          {/* Subtle shine effect on icon container */}
+          <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-white/20 to-transparent rounded-t-xl" />
+        </div>
+
+        <div className="flex-1 min-w-0">
+          <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400 mb-2 uppercase tracking-wide truncate">
+            {label}
+          </p>
+          <p
+            className="text-3xl font-bold bg-gradient-to-r bg-clip-text text-transparent 
+            from-zinc-800 to-zinc-600 dark:from-zinc-100 dark:to-zinc-300 mb-2"
+          >
+            {value || "—"}
+          </p>
+
+          {/* Trend/Description section */}
+          {(trend || description) && (
+            <div className={`mt-3 pt-3 border-t ${style.border}`}>
+              {trend && (
+                <div className="flex items-center text-sm">
+                  <span
+                    className={`font-medium mr-2 ${trend.value > 0 ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400"}`}
+                  >
+                    {trend.value > 0 ? "↗" : "↘"} {Math.abs(trend.value)}%
+                  </span>
+                  <span className="text-zinc-500 dark:text-zinc-400 text-xs">
+                    {trend.label}
+                  </span>
+                </div>
+              )}
+              {description && (
+                <p className="text-xs text-zinc-400 dark:text-zinc-500 mt-1 truncate">
+                  {description}
+                </p>
+              )}
+            </div>
+          )}
+        </div>
       </div>
 
-      <div className="relative z-10 flex-1">
-        <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-1">{label}</p>
-        <p className="text-2xl font-bold text-zinc-800 dark:text-zinc-100">
-          {value || "—"}
-        </p>
+      {/* Floating particles effect */}
+      <div className="absolute bottom-2 right-2 flex space-x-1 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+        {[1, 2, 3].map((i) => (
+          <div
+            key={i}
+            className={`w-1 h-1 rounded-full bg-gradient-to-r ${style.gradient} animate-pulse`}
+            style={{ animationDelay: `${i * 100}ms` }}
+          />
+        ))}
       </div>
     </div>
   );

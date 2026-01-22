@@ -11,23 +11,24 @@ export default defineConfig({
       registerType: "autoUpdate",
 
       /* ===== Assets ===== */
-      includeAssets: ["favicon.svg", "favicon.ico", "apple-touch-icon.png"],
+      includeAssets: ["favicon.svg", "logo.svg", "apple-touch-icon.png"],
 
       /* ===== Manifest ===== */
       manifest: {
         id: "/",
-        name: "Bro Coffee ☕",
+        name: "Bro Coffee",
         short_name: "Bro Coffee",
-        description: "Theo dõi thói quen uống cà phê một cách đẹp mắt",
+        description:
+          "Theo dõi thói quen uống cà phê, chi tiêu và khám phá quán cafe yêu thích",
 
         start_url: "/",
         scope: "/",
         display: "standalone",
         orientation: "portrait-primary",
         theme_color: "#f59e0b", // amber-500
-        background_color: "#fafaf9", // stone-50 (không trắng thuần)
+        background_color: "#fafaf9", // stone-50
 
-        categories: ["lifestyle", "productivity"],
+        categories: ["lifestyle", "productivity", "food"],
 
         icons: [
           {

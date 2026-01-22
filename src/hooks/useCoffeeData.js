@@ -49,7 +49,18 @@ export default function useCoffeeData() {
       const csv = await res.text();
       const parsed = parseCSV(csv).filter((row) => row.drink || row.price);
 
-      setData(parsed.length > 0 ? parsed.slice(0, -1) : []);
+      // Sort by date (latest first)
+      const sorted = parsed.sort((a, b) => {
+        // Parse DD/MM/YYYY format
+        const parseDate = (dateStr) => {
+          if (!dateStr) return new Date(0);
+          const [day, month, year] = dateStr.split('/').map(Number);
+          return new Date(year, month - 1, day);
+        };
+        return parseDate(b.date) - parseDate(a.date);
+      });
+
+      setData(sorted.length > 0 ? sorted.slice(0, -1) : []);
       setLastUpdated(new Date().toLocaleTimeString("vi-VN"));
     } catch (err) {
       setError(err.message);

@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import {
   BarChart,
   Bar,
@@ -5,6 +6,8 @@ import {
   YAxis,
   Tooltip,
   ResponsiveContainer,
+  Cell,
+  CartesianGrid,
 } from "recharts";
 import StatsCard from "./StatsCard";
 
@@ -41,36 +44,85 @@ function buildTop(data, key) {
 }
 
 /* ================= Shared Chart ================= */
-function TopBarChart({ title, dataKey, data }) {
-  const chartData = buildTop(data, dataKey);
+function TopBarChart({ title, dataKey, data, colorStart, colorEnd }) {
+  const chartData = useMemo(() => buildTop(data, dataKey), [data, dataKey]);
 
   return (
     <StatsCard title={title}>
-      <ResponsiveContainer width="100%" height={280}>
-        <BarChart data={chartData}>
-          <XAxis dataKey="name" tick={{ fontSize: 12 }} interval={0} />
-          <YAxis tickFormatter={formatShortVND} width={60} />
-          <Tooltip
-            formatter={(value) => formatVND(value)}
-            contentStyle={{
-              borderRadius: 12,
-              border: "1px solid #e4e4e7",
-              background: "rgba(255,255,255,0.95)",
-            }}
-            labelStyle={{ fontWeight: 600 }}
-          />
-          <Bar dataKey="total" fill="#f59e0b" radius={[6, 6, 0, 0]} />
-        </BarChart>
-      </ResponsiveContainer>
+      <div className="h-[300px] w-full">
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={chartData} layout="vertical" margin={{ top: 0, right: 30, left: 0, bottom: 0 }}>
+            <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#e4e4e7" opacity={0.5} />
+            <XAxis type="number" hide />
+            <YAxis
+              dataKey="name"
+              type="category"
+              width={100}
+              tick={{ fontSize: 12, fill: "#52525b", fontWeight: 500 }}
+              axisLine={false}
+              tickLine={false}
+            />
+            <Tooltip
+              cursor={{ fill: 'transparent' }}
+              content={({ active, payload, label }) => {
+                if (active && payload && payload.length) {
+                  return (
+                    <div className="bg-zinc-900 text-white text-xs rounded-lg py-2 px-3 shadow-xl border border-zinc-800 z-50">
+                      <p className="font-semibold mb-1">{label}</p>
+                      <p className="font-mono text-amber-400">
+                        {formatVND(payload[0].value)}
+                      </p>
+                    </div>
+                  );
+                }
+                return null;
+              }}
+            />
+
+            <Bar dataKey="total" radius={[0, 4, 4, 0]} barSize={24} animationDuration={1500}>
+              {chartData.map((entry, index) => (
+                <Cell
+                  key={`cell-${index}`}
+                  fill={`url(#gradient-${dataKey})`}
+                  className="hover:opacity-80 transition-opacity"
+                />
+              ))}
+            </Bar>
+
+            <defs>
+              <linearGradient id={`gradient-${dataKey}`} x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stopColor={colorStart || "#f59e0b"} />
+                <stop offset="100%" stopColor={colorEnd || "#d97706"} />
+              </linearGradient>
+            </defs>
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
     </StatsCard>
   );
 }
 
 /* ================= Exports ================= */
 export function TopPlaceChart({ data }) {
-  return <TopBarChart title="Top quán cà phê" data={data} dataKey="place" />;
+  return (
+    <TopBarChart
+      title="Top quán cà phê"
+      data={data}
+      dataKey="place"
+      colorStart="#f59e0b"
+      colorEnd="#b45309"
+    />
+  );
 }
 
 export function TopDrinkChart({ data }) {
-  return <TopBarChart title="Top đồ uống" data={data} dataKey="drink" />;
+  return (
+    <TopBarChart
+      title="Top đồ uống"
+      data={data}
+      dataKey="drink"
+      colorStart="#10b981"
+      colorEnd="#059669"
+    />
+  );
 }

@@ -108,28 +108,20 @@ export default function Header({ onRefresh }) {
             "
             />
 
-            <div
+            <img
+              src="favicon.svg"
+              alt="Bro Coffee Logo"
               className="
-              relative
-              p-2
-              bg-gradient-to-br from-amber-100 to-amber-50
-              dark:from-amber-900/40 dark:to-amber-800/30
-              rounded-xl
-              border border-amber-200/50 dark:border-amber-800/30
-              shadow-sm
-              group-hover/logo:scale-110
-              transition-transform duration-300
-            "
-            >
-              <Coffee
-                size={20}
-                className="
-                  text-amber-600 dark:text-amber-400
-                  group-hover/logo:rotate-12
-                  transition-transform duration-300
-                "
-              />
-            </div>
+                relative z-10
+                w-10 h-10
+                rounded-xl
+                shadow-md
+                object-cover
+                bg-amber-500
+                group-hover/logo:scale-110
+                transition-transform duration-300
+              "
+            />
           </div>
 
           {/* Logo text */}
@@ -211,7 +203,10 @@ export default function Header({ onRefresh }) {
             </button>
           )}
 
-          <ThemeToggle />
+          {/* Theme Toggle - Desktop only */}
+          <div className="hidden md:block">
+            <ThemeToggle />
+          </div>
 
           {/* Mobile menu button */}
           <button
@@ -249,103 +244,107 @@ export default function Header({ onRefresh }) {
         </div>
       </div>
 
-      {/* ===== MOBILE MENU ===== */}
+      {/* ===== MOBILE SIDEBAR ===== */}
+      {/* Backdrop */}
       <div
         className={`
-          md:hidden overflow-hidden
-          transition-all duration-500 ease-out
-          ${open ? "max-h-60 opacity-100" : "max-h-0 opacity-0"}
+          md:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-[60]
+          transition-opacity duration-300
+          ${open ? "opacity-100" : "opacity-0 pointer-events-none"}
+        `}
+        onClick={() => setOpen(false)}
+      />
+
+      {/* Sidebar */}
+      <aside
+        className={`
+          md:hidden fixed top-0 right-0 z-[100] h-[100dvh]
+          w-72 bg-white dark:bg-zinc-950
+          border-l border-zinc-200 dark:border-zinc-800
+          shadow-2xl
+          transform transition-transform duration-300 ease-out
+          ${open ? "translate-x-0" : "translate-x-full"}
+          flex flex-col
         `}
       >
-        {/* Mobile menu gradient border */}
-        <div
-          className="
-          h-px
-          bg-gradient-to-r from-transparent via-amber-400/30 to-transparent
-        "
-        />
+        {/* Sidebar Header */}
+        <div className="p-6 border-b border-zinc-200 dark:border-zinc-800 shrink-0">
+          <div className="flex items-center justify-between mb-6">
+            <Link
+              to="/"
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-3"
+            >
+              <img
+                src="favicon.svg"
+                alt="Bro Coffee Logo"
+                className="w-9 h-9 rounded-xl shadow-sm object-cover bg-amber-500"
+              />
+              <span className="font-bold text-lg bg-gradient-to-r from-amber-700 via-amber-600 to-amber-800 dark:from-amber-300 dark:via-amber-200 dark:to-amber-400 bg-clip-text text-transparent">
+                Bro Coffee
+              </span>
+            </Link>
+            <button
+              onClick={() => setOpen(false)}
+              className="p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+            >
+              <X size={20} />
+            </button>
+          </div>
+        </div>
 
-        <div
-          className="
-          px-6 py-4
-          flex flex-col gap-2
-          bg-gradient-to-b from-white to-amber-50/30
-          dark:from-zinc-900 dark:to-amber-900/5
-        "
-        >
+        {/* Sidebar Navigation */}
+        <nav className="p-4 space-y-2 flex-1 overflow-y-auto">
           {navItems.map((item) => (
-            <div key={item.to} className="relative">
-              <Link
-                to={item.to}
-                onClick={() => setOpen(false)}
+            <Link
+              key={item.to}
+              to={item.to}
+              onClick={() => setOpen(false)}
+              className={`
+                flex items-center gap-3
+                px-4 py-3.5
+                text-sm font-medium
+                rounded-xl
+                transition-all duration-300
+                ${
+                  pathname === item.to
+                    ? "text-amber-700 dark:text-amber-300 bg-gradient-to-r from-amber-50 to-amber-100/50 dark:from-amber-900/40 dark:to-amber-800/30 shadow-sm"
+                    : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 hover:bg-zinc-100/50 dark:hover:bg-zinc-800/30"
+                }
+              `}
+            >
+              <item.icon
+                size={20}
                 className={`
-                  flex items-center gap-3
-                  px-4 py-3
-                  text-sm font-medium
-                  rounded-xl
-                  transition-all duration-300
-                  group/mobile
                   ${
                     pathname === item.to
-                      ? "text-amber-700 dark:text-amber-300 bg-gradient-to-r from-amber-50 to-amber-100/50 dark:from-amber-900/40 dark:to-amber-800/30"
-                      : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 hover:bg-zinc-100/50 dark:hover:bg-zinc-800/30"
+                      ? "text-amber-500 dark:text-amber-400"
+                      : "text-zinc-400 dark:text-zinc-500"
                   }
                 `}
-              >
-                <item.icon
-                  size={18}
-                  className={`
-                    ${
-                      pathname === item.to
-                        ? "text-amber-500 dark:text-amber-400"
-                        : "text-zinc-400 dark:text-zinc-500 group-hover/mobile:text-zinc-600 dark:group-hover/mobile:text-zinc-300"
-                    }
-                  `}
-                />
-                <span>{item.label}</span>
-
-                {/* Hover arrow */}
-                <div
-                  className="
-                  ml-auto
-                  opacity-0 group-hover/mobile:opacity-100
-                  translate-x-2 group-hover/mobile:translate-x-0
-                  transition-all duration-300
-                "
-                >
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    className="text-amber-500"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                </div>
-              </Link>
-
-              {/* Mobile active indicator */}
+              />
+              <span className="flex-1">{item.label}</span>
               {pathname === item.to && (
-                <div
-                  className="
-                  absolute left-0 top-1/2 -translate-y-1/2
-                  w-1 h-8
-                  bg-gradient-to-b from-amber-400 to-amber-500
-                  rounded-r-full
-                "
-                />
+                <div className="w-1.5 h-1.5 bg-amber-500 rounded-full" />
               )}
-            </div>
+            </Link>
           ))}
+        </nav>
+
+        {/* Sidebar Footer with Theme Toggle */}
+        <div className="p-4 border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/50 shrink-0 space-y-4">
+          <div className="flex flex-col gap-2">
+            <span className="text-xs font-semibold text-zinc-400 uppercase tracking-wider pl-2">
+              Giao diện
+            </span>
+            <ThemeToggle />
+          </div>
+
+          <p className="text-xs text-center text-zinc-500 dark:text-zinc-400 pt-2 border-t border-zinc-200/50 dark:border-zinc-800/50">
+            Made with ☕ & ❤️ by Bro Code
+          </p>
         </div>
-      </div>
+      </aside>
     </header>
   );
 }

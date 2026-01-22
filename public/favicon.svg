@@ -1,25 +1,21 @@
-<?xml version="1.0" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN"
- "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
-<svg version="1.0" xmlns="http://www.w3.org/2000/svg"
- width="512.000000pt" height="512.000000pt" viewBox="0 0 512.000000 512.000000"
- preserveAspectRatio="xMidYMid meet">
-
-<g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
-fill="#000000" stroke="none">
-<path d="M795 4499 c-85 -12 -195 -70 -260 -135 -67 -66 -127 -186 -151 -299
--35 -169 -16 -439 45 -625 35 -107 136 -299 206 -392 82 -109 220 -247 324
--324 45 -32 81 -66 81 -76 0 -9 -28 -36 -63 -61 -213 -152 -375 -370 -427
--572 -26 -100 -28 -257 -5 -353 23 -91 92 -232 156 -317 284 -373 849 -633
-1564 -717 143 -16 606 -17 750 0 914 106 1579 501 1721 1023 24 88 25 271 1
-359 -23 88 -94 232 -150 305 -58 78 -204 218 -285 275 -57 41 -62 47 -56 73
-32 148 36 198 41 532 6 378 0 455 -41 557 -40 98 -87 167 -176 257 -309 314
--880 495 -1500 478 -356 -11 -654 -73 -926 -193 l-101 -45 -134 77 c-74 43
--163 91 -198 107 -127 57 -295 84 -416 66z m2215 -244 c530 -82 936 -314 1041
--594 32 -87 25 -195 -20 -286 -42 -85 -163 -212 -266 -278 -307 -197 -675
--291 -1135 -290 -303 0 -527 36 -777 124 -352 124 -608 346 -642 557 -55 352
-469 706 1159 781 126 14 515 6 640 -14z m-2049 -241 c30 -9 82 -31 117 -51
-l63 -35 -24 -31 c-38 -50 -84 -148 -101 -214 -11 -40 -16 -105 -16 -189 l0
--129 -26 38 c-92 136 -149 374 -126 529 7 48 17 77 28 85 22 16 19 16 85 -3z"/>
-</g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Amber background -->
+  <rect width="32" height="32" fill="#f59e0b" rx="6"/>
+  
+  <!-- Coffee cup - white -->
+  <g transform="translate(16, 16)">
+    <!-- Steam -->
+    <path d="M -3 -7 Q -3 -8.5 -2.5 -9.5" stroke="white" stroke-width="0.5" fill="none" stroke-linecap="round" opacity="0.8"/>
+    <path d="M 0 -7.5 Q 0 -9 0.5 -10" stroke="white" stroke-width="0.5" fill="none" stroke-linecap="round" opacity="0.8"/>
+    <path d="M 3 -7 Q 3 -8.5 3.5 -9.5" stroke="white" stroke-width="0.5" fill="none" stroke-linecap="round" opacity="0.8"/>
+    
+    <!-- Cup body -->
+    <path d="M -5.5 -5 L -4.5 3 Q -4.5 4.5 -3 5.5 L 3 5.5 Q 4.5 4.5 4.5 3 L 5.5 -5 Z" fill="white"/>
+    
+    <!-- Cup handle -->
+    <path d="M 5.5 -1.5 Q 7.5 -1.5 7.5 1.5 Q 7.5 3.5 5.5 3.5" stroke="white" stroke-width="1" fill="none" stroke-linecap="round"/>
+    
+    <!-- Coffee liquid -->
+    <ellipse cx="0" cy="-4" rx="4.5" ry="1.2" fill="#d97706" opacity="0.3"/>
+  </g>
 </svg>

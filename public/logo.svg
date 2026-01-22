@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- Amber background -->
+  <rect width="200" height="200" fill="#f59e0b" rx="40"/>
+  
+  <!-- Coffee cup - white -->
+  <g transform="translate(100, 100)">
+    <!-- Steam -->
+    <path d="M -20 -45 Q -20 -55 -15 -60" stroke="white" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.8"/>
+    <path d="M 0 -48 Q 0 -58 5 -63" stroke="white" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.8"/>
+    <path d="M 20 -45 Q 20 -55 25 -60" stroke="white" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.8"/>
+    
+    <!-- Cup body -->
+    <path d="M -35 -30 L -30 20 Q -30 30 -20 35 L 20 35 Q 30 30 30 20 L 35 -30 Z" fill="white"/>
+    
+    <!-- Cup handle -->
+    <path d="M 35 -10 Q 50 -10 50 10 Q 50 25 35 25" stroke="white" stroke-width="6" fill="none" stroke-linecap="round"/>
+    
+    <!-- Coffee liquid inside cup -->
+    <ellipse cx="0" cy="-25" rx="30" ry="8" fill="#d97706" opacity="0.3"/>
+  </g>
+</svg>

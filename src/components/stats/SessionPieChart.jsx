@@ -1,4 +1,5 @@
-import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
+import { useMemo, useState } from "react";
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Sector } from "recharts";
 import StatsCard from "./StatsCard";
 
 /* ---------------- Utils ---------------- */
@@ -18,66 +19,119 @@ const formatShortVND = (value) => {
   return value;
 };
 
+// Render custom active shape
+const renderActiveShape = (props) => {
+  const { cx, cy, innerRadius, outerRadius, startAngle, endAngle, fill, payload, percent, value } = props;
+
+  return (
+    <g>
+      <text x={cx} y={cy} dy={-5} textAnchor="middle" fill={fill} className="text-sm font-bold">
+        {payload.name}
+      </text>
+      <text x={cx} y={cy} dy={15} textAnchor="middle" fill="#71717a" className="text-xs">
+        {`${(percent * 100).toFixed(0)}%`}
+      </text>
+      <Sector
+        cx={cx}
+        cy={cy}
+        innerRadius={innerRadius}
+        outerRadius={outerRadius + 8}
+        startAngle={startAngle}
+        endAngle={endAngle}
+        fill={fill}
+        opacity={0.8}
+      />
+      <Sector
+        cx={cx}
+        cy={cy}
+        startAngle={startAngle}
+        endAngle={endAngle}
+        innerRadius={innerRadius - 6}
+        outerRadius={innerRadius - 2}
+        fill={fill}
+      />
+    </g>
+  );
+};
+
 export function SessionPieChart({ data }) {
-  const map = {};
+  const [activeIndex, setActiveIndex] = useState(0);
 
-  data.forEach((item) => {
-    if (!item.session || !item.price) return;
+  const chartData = useMemo(() => {
+    const map = {};
 
-    const value = Number(item.price.replace(/[^\d]/g, ""));
-    map[item.session] = (map[item.session] || 0) + value;
-  });
+    data.forEach((item) => {
+      if (!item.session || !item.price) return;
 
-  const chartData = Object.keys(map).map((key) => ({
-    name: key,
-    value: map[key],
-  }));
+      const value = Number(item.price.replace(/[^\d]/g, ""));
+      map[item.session] = (map[item.session] || 0) + value;
+    });
+
+    return Object.keys(map).map((key) => ({
+      name: key,
+      value: map[key],
+    }));
+  }, [data]);
+
+  const onPieEnter = (_, index) => {
+    setActiveIndex(index);
+  };
 
   return (
     <StatsCard title="Chi tiêu theo buổi">
-      <ResponsiveContainer width="100%" height={280}>
-        <PieChart>
-          <Pie
-            data={chartData}
-            dataKey="value"
-            nameKey="name"
-            innerRadius={65}
-            outerRadius={100}
-            paddingAngle={3}
-          >
-            {chartData.map((_, i) => (
-              <Cell key={i} fill={COLORS[i % COLORS.length]} />
-            ))}
-          </Pie>
+      <div className="flex flex-col h-full justify-between">
+        <div className="h-[220px] w-full relative">
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Pie
+                activeIndex={activeIndex}
+                activeShape={renderActiveShape}
+                data={chartData}
+                dataKey="value"
+                nameKey="name"
+                innerRadius={65}
+                outerRadius={85}
+                paddingAngle={4}
+                onMouseEnter={onPieEnter}
+              >
+                {chartData.map((_, i) => (
+                  <Cell
+                    key={`cell-${i}`}
+                    fill={COLORS[i % COLORS.length]}
+                    stroke="transparent"
+                  />
+                ))}
+              </Pie>
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
 
-          <Tooltip
-            formatter={(value) => formatVND(value)}
-            contentStyle={{
-              borderRadius: 12,
-              border: "1px solid #e4e4e7",
-              background: "rgba(255,255,255,0.95)",
-            }}
-            labelStyle={{ fontWeight: 600 }}
-          />
-        </PieChart>
-      </ResponsiveContainer>
-
-      {/* Legend custom */}
-      <div className="mt-4 grid grid-cols-2 gap-2 text-sm">
-        {chartData.map((item, i) => (
-          <div key={i} className="flex items-center gap-2">
-            <span
-              className="w-3 h-3 rounded-full"
-              style={{ backgroundColor: COLORS[i % COLORS.length] }}
-            />
-            <span className="flex-1 text-zinc-700 dark:text-zinc-300">
-              {item.name}
-            </span>
-            <span className="font-medium text-zinc-900 dark:text-zinc-100">
-              {formatShortVND(item.value)}
-            </span>
-          </div>
-        ))}
+        {/* Legend custom */}
+        <div className="grid grid-cols-2 gap-3 pb-2 pt-2">
+          {chartData.map((item, i) => (
+            <div
+              key={i}
+              className={`
+                flex items-center gap-2 p-2 rounded-xl transition-colors
+                ${i === activeIndex ? "bg-zinc-100 dark:bg-zinc-800" : ""}
+              `}
+              onMouseEnter={() => setActiveIndex(i)}
+            >
+              <div
+                className="w-2 h-8 rounded-full opacity-80"
+                style={{ backgroundColor: COLORS[i % COLORS.length] }}
+              />
+              <div className="flex flex-col">
+                <span className="text-xs text-zinc-500 dark:text-zinc-400">
+                  {item.name}
+                </span>
+                <span className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
+                  {formatShortVND(item.value)}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </StatsCard>
   );

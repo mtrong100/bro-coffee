@@ -42,40 +42,41 @@ export default function CoffeeCard({ item }) {
             "
           />
         ) : (
-          <div className="h-full flex items-center justify-center bg-linear-to-br from-amber-50 to-stone-100 dark:from-zinc-800 dark:to-zinc-900 text-amber-400/60">
+          <div className="h-full flex items-center justify-center bg-gradient-to-br from-amber-50 to-stone-100 dark:from-zinc-800 dark:to-zinc-900 text-amber-400/60">
             <Coffee size={40} />
           </div>
         )}
 
-        <div className="absolute inset-0 bg-linear-to-t from-black/50 via-black/10 to-transparent" />
-
-        <div className="absolute top-3 left-3 flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur text-white text-xs font-medium">
-          <CalendarDays size={14} />
-          {item.date}
-        </div>
-
-        <div className="absolute top-3 right-3 flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur text-white text-xs font-medium">
-          <Clock size={14} />
-          {item.time}
-        </div>
+        {/* Subtle gradient overlay only */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
       </div>
 
       {/* CONTENT */}
       <div className="p-5 flex flex-col flex-1">
-        <div className="flex items-center justify-between mb-4 gap-3">
-          <div className="flex items-center gap-2 min-w-0">
-            <MapPin
-              size={16}
-              className="text-amber-500 dark:text-amber-400 shrink-0"
-            />
-            <span className="font-medium text-zinc-800 dark:text-zinc-200 truncate">
-              {item.place}
-            </span>
+        {/* Date, Time, Session row */}
+        <div className="flex items-center gap-2 mb-4 flex-wrap">
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300 text-xs font-medium">
+            <CalendarDays size={13} />
+            {item.date}
           </div>
-
-          <div className="px-3 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300">
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 text-xs font-medium">
+            <Clock size={13} />
+            {item.time}
+          </div>
+          <div className="ml-auto px-3 py-1 rounded-full text-xs font-semibold bg-gradient-to-r from-amber-100 to-amber-50 dark:from-amber-900/40 dark:to-amber-800/30 text-amber-800 dark:text-amber-300 border border-amber-200/50 dark:border-amber-700/30">
             {item.session}
           </div>
+        </div>
+
+        {/* Place */}
+        <div className="flex items-center gap-2 mb-4">
+          <MapPin
+            size={16}
+            className="text-amber-500 dark:text-amber-400 shrink-0"
+          />
+          <span className="font-semibold text-zinc-800 dark:text-zinc-200 truncate">
+            {item.place}
+          </span>
         </div>
 
         <div className="mb-4 flex-1">
@@ -94,7 +95,10 @@ export default function CoffeeCard({ item }) {
                   className="text-zinc-400 dark:text-zinc-500 mt-0.5"
                 />
                 <span className="text-sm text-zinc-700 dark:text-zinc-300 leading-snug">
-                  {drink}
+                  {/* Display "x2" for Cafe sữa only when there's 1 drink */}
+                  {drink === "Cafe sữa" && drinks.length === 1
+                    ? `${drink} x2`
+                    : drink}
                 </span>
               </div>
             ))}
@@ -110,7 +114,7 @@ export default function CoffeeCard({ item }) {
               />
               <span className="text-sm">Tổng tiền</span>
             </div>
-            <div className="text-lg font-bold bg-linear-to-r from-amber-600 to-amber-500 dark:from-amber-400 dark:to-amber-300 bg-clip-text text-transparent">
+            <div className="text-lg font-bold bg-gradient-to-r from-amber-600 to-amber-500 dark:from-amber-400 dark:to-amber-300 bg-clip-text text-transparent">
               {formatVND(item.price)}
             </div>
           </div>
@@ -122,7 +126,7 @@ export default function CoffeeCard({ item }) {
           pointer-events-none absolute inset-0
           opacity-0 group-hover:opacity-100
           transition-opacity duration-500
-          bg-linear-to-br from-amber-500/10 via-transparent to-amber-500/10
+          bg-gradient-to-br from-amber-500/10 via-transparent to-amber-500/10
         "
       />
     </div>

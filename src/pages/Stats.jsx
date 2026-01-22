@@ -1,3 +1,4 @@
+import { RefreshCw } from "lucide-react";
 import useCoffeeData from "../hooks/useCoffeeData";
 import useCoffeeLocationData from "../hooks/useCoffeeLocationData";
 
@@ -151,7 +152,7 @@ export default function Stats() {
               className="
             absolute -bottom-4 -left-2
             w-24 h-8
-            bg-linear-to-r from-red-500/20 to-amber-500/20
+            bg-gradient-to-r from-red-500/20 to-amber-500/20
             rounded-full
             blur-sm
           "
@@ -163,7 +164,7 @@ export default function Stats() {
             className="
           absolute -top-2 -right-2
           w-8 h-8
-          bg-linear-to-br from-red-500 to-red-600
+          bg-gradient-to-br from-red-500 to-red-600
           rounded-full
           flex items-center justify-center
           shadow-lg
@@ -191,7 +192,7 @@ export default function Stats() {
           <h3
             className="
           text-xl font-semibold
-          bg-linear-to-r from-red-600 via-rose-500 to-red-600
+          bg-gradient-to-r from-red-600 via-rose-500 to-red-600
           dark:from-red-400 dark:via-rose-300 dark:to-red-400
           bg-clip-text text-transparent
         "
@@ -225,7 +226,7 @@ export default function Stats() {
             className="
             mt-6
             px-6 py-2
-            bg-linear-to-r from-amber-500 to-amber-600
+            bg-gradient-to-r from-amber-500 to-amber-600
             hover:from-amber-600 hover:to-amber-700
             text-white
             rounded-lg
@@ -270,7 +271,7 @@ export default function Stats() {
             className="
           absolute top-1/4 left-1/4
           w-64 h-64
-          bg-linear-to-r from-amber-400 to-transparent
+          bg-gradient-to-r from-amber-400 to-transparent
           rounded-full
           blur-3xl
         "
@@ -279,7 +280,7 @@ export default function Stats() {
             className="
           absolute bottom-1/4 right-1/4
           w-96 h-96
-          bg-linear-to-l from-red-400 to-transparent
+          bg-gradient-to-l from-red-400 to-transparent
           rounded-full
           blur-3xl
         "
@@ -295,7 +296,7 @@ export default function Stats() {
       <section className="space-y-6">
         <SectionHeader
           title="Thống kê chi tiêu"
-          desc="Tổng quan thói quen chi tiêu cà phê trong năm 2025"
+          desc="Tổng quan thói quen chi tiêu cà phê của bạn"
         />
 
         <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
