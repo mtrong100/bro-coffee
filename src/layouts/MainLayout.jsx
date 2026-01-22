@@ -16,7 +16,7 @@ export default function MainLayout({ children }) {
     >
       <Header />
 
-      <main className="flex-1">{children}</main>
+      <main className="flex-1 ">{children}</main>
 
       <ScrollToTopButton />
 

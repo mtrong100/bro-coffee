@@ -1,10 +1,7 @@
 import { useMemo } from "react";
 import { Database, DollarSign, Zap, AlertCircle } from "lucide-react";
-
-import Header from "../components/Header";
 import DataTable from "../components/DataTable";
 import StatCard from "../components/StatCard";
-import Footer from "../components/Footer";
 import useCoffeeData from "../hooks/useCoffeeData";
 
 /* ================= HELPERS ================= */
@@ -12,8 +9,6 @@ const parseVND = (value) => Number(String(value).replace(/[^\d]/g, "")) || 0;
 
 export default function Home() {
   const { data, loading, error, lastUpdated, refetch } = useCoffeeData();
-
-  console.log(data);
 
   const totalRecords = data.length;
 
