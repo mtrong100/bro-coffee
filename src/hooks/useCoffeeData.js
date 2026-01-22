@@ -19,7 +19,7 @@ const HEADERS = [
 const parseCSV = (csv) => {
   const rows = csv.split("\n").filter(Boolean);
 
-  if (rows.length === 0) return [];
+  if (rows.length <= 1) return []; // Only header or empty
 
   return rows.slice(1).map((row) => {
     const values = row
@@ -49,10 +49,15 @@ export default function useCoffeeData() {
       if (!res.ok) throw new Error("Không thể tải Google Sheets");
 
       const csv = await res.text();
-      const parsed = parseCSV(csv).filter((row) => row.drink || row.price);
+      const parsed = parseCSV(csv);
+
+      // Filter out completely empty rows
+      const filtered = parsed.filter(
+        (row) => row.date || row.time || row.place || row.drink || row.price,
+      );
 
       // Sort by date (latest first)
-      const sorted = parsed.sort((a, b) => {
+      const sorted = filtered.sort((a, b) => {
         // Parse DD/MM/YYYY format
         const parseDate = (dateStr) => {
           if (!dateStr) return new Date(0);
@@ -62,13 +67,10 @@ export default function useCoffeeData() {
         return parseDate(b.date) - parseDate(a.date);
       });
 
-      // FIX: Don't slice the last row unless it's empty/header
-      // Only remove if it's actually empty
-      const filtered = sorted.filter(
-        (row) => row.date || row.time || row.place || row.drink || row.price,
-      );
+      // Remove the last item from the array
+      const dataWithoutLastItem = sorted.length > 0 ? sorted.slice(0, -1) : [];
 
-      setData(filtered);
+      setData(dataWithoutLastItem);
       setLastUpdated(new Date().toLocaleTimeString("vi-VN"));
     } catch (err) {
       setError(err.message);

@@ -4,36 +4,35 @@ import DataTable from "../components/DataTable";
 import StatCard from "../components/StatCard";
 import useCoffeeData from "../hooks/useCoffeeData";
 
-/* ================= HELPERS ================= */
-const parseVND = (value) => Number(String(value).replace(/[^\d]/g, "")) || 0;
-
 export default function Home() {
   const { data, loading, error, lastUpdated, refetch } = useCoffeeData();
-  const [stableData, setStableData] = useState([]);
 
-  // Stabilize data to prevent re-renders during scroll
-  useEffect(() => {
-    if (!loading && !error) {
-      setStableData(data);
-    }
-  }, [data, loading, error]);
+  const totalRecords = data.length;
 
-  const totalRecords = useMemo(() => stableData.length, [stableData]);
+  const totalAmount = useMemo(() => {
+    if (!data || data.length === 0) return 0;
 
-  const totalAmount = useMemo(
-    () => stableData.reduce((sum, row) => sum + parseVND(row.price), 0),
-    [stableData],
-  );
+    let sum = 0;
+    data.forEach((row) => {
+      const price = row?.price;
 
-  const formattedTotalAmount = useMemo(
-    () =>
-      new Intl.NumberFormat("vi-VN", {
-        style: "currency",
-        currency: "VND",
-      }).format(totalAmount),
-    [totalAmount],
-  );
+      if (typeof price === "number") {
+        sum += price;
+      } else if (typeof price === "string") {
+        // Remove all non-digit characters
+        const cleaned = price.replace(/\D/g, "");
+        const parsedPrice = parseInt(cleaned, 10) || 0;
+        sum += parsedPrice;
+      }
+    });
 
+    return sum;
+  }, [data]);
+
+  const formattedTotalAmount = new Intl.NumberFormat("vi-VN", {
+    style: "currency",
+    currency: "VND",
+  }).format(totalAmount);
   return (
     <div className="min-h-screen bg-gradient-to-br from-stone-50 via-amber-50/30 to-stone-100 dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-950 transition-colors duration-300 overflow-x-hidden">
       {/* Main */}
@@ -125,7 +124,7 @@ export default function Home() {
 
           {/* Change this line in Home.jsx */}
           <div className="bg-white/50 dark:bg-zinc-900/50 rounded-3xl shadow-sm border border-zinc-200/50 dark:border-zinc-800/50 overflow-hidden">
-            <DataTable data={stableData} loading={loading} error={error} />
+            <DataTable data={data} loading={loading} error={error} />
           </div>
         </div>
       </main>
