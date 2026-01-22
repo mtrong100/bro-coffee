@@ -123,7 +123,8 @@ export default function Home() {
             </h2>
           </div>
 
-          <div className="bg-white/50 dark:bg-zinc-900/50 backdrop-blur-xl rounded-3xl shadow-sm border border-zinc-200/50 dark:border-zinc-800/50 overflow-hidden">
+          {/* Change this line in Home.jsx */}
+          <div className="bg-white/50 dark:bg-zinc-900/50 rounded-3xl shadow-sm border border-zinc-200/50 dark:border-zinc-800/50 overflow-hidden">
             <DataTable data={stableData} loading={loading} error={error} />
           </div>
         </div>

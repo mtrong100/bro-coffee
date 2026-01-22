@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
 import CoffeeCard, { SkeletonCoffeeCard } from "./CoffeeCard";
 import Filters from "./Filters";
 import Pagination from "./Pagination";
@@ -12,13 +12,28 @@ export default function DataTable({ data = [], loading }) {
     session: "",
   });
   const [page, setPage] = useState(1);
+  const [stablePage, setStablePage] = useState(1);
 
   const perPage = 12;
 
-  /* reset page when data / filter changes */
+  /* Debounced page reset to prevent jank */
   useEffect(() => {
-    setPage(1);
+    const timer = setTimeout(() => {
+      setPage(1);
+      setStablePage(1);
+    }, 100);
+    return () => clearTimeout(timer);
   }, [search, filters, data]);
+
+  /* Stabilize page changes during scroll */
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (page !== stablePage) {
+        setStablePage(page);
+      }
+    }, 50);
+    return () => clearTimeout(timer);
+  }, [page, stablePage]);
 
   const normalizeMonthFilter = (monthFilter) => {
     if (!monthFilter) return "";
@@ -29,7 +44,7 @@ export default function DataTable({ data = [], loading }) {
   };
 
   const filteredData = useMemo(() => {
-    if (!Array.isArray(data)) return [];
+    if (!Array.isArray(data) || data.length === 0) return [];
 
     return data.filter((item) => {
       if (!item) return false;
@@ -64,16 +79,20 @@ export default function DataTable({ data = [], loading }) {
 
   const totalPages = Math.max(1, Math.ceil(filteredData.length / perPage));
 
-  const paginatedData = filteredData.slice(
-    (page - 1) * perPage,
-    page * perPage
-  );
+  const paginatedData = useMemo(() => {
+    return filteredData.slice((stablePage - 1) * perPage, stablePage * perPage);
+  }, [filteredData, stablePage, perPage]);
 
-  const clearFilters = () => {
+  const clearFilters = useCallback(() => {
     setSearch("");
     setFilters({ month: "", place: "", drink: "", session: "" });
     setPage(1);
-  };
+    setStablePage(1);
+  }, []);
+
+  const handlePageChange = useCallback((newPage) => {
+    setPage(newPage);
+  }, []);
 
   return (
     <div className="space-y-6">
@@ -98,7 +117,7 @@ export default function DataTable({ data = [], loading }) {
       {!loading && paginatedData.length > 0 && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {paginatedData.map((item, i) => (
-            <CoffeeCard key={i} item={item} />
+            <CoffeeCard key={`${item.date}-${item.time}-${i}`} item={item} />
           ))}
         </div>
       )}
@@ -110,11 +129,11 @@ export default function DataTable({ data = [], loading }) {
         </p>
       )}
 
-      {!loading && (
+      {!loading && filteredData.length > perPage && (
         <Pagination
-          page={page}
+          page={stablePage}
           totalPages={totalPages}
-          onPageChange={setPage}
+          onPageChange={handlePageChange}
         />
       )}
     </div>
