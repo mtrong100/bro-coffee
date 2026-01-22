@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useEffect, useState } from "react";
 import { Database, DollarSign, Zap, AlertCircle } from "lucide-react";
 import DataTable from "../components/DataTable";
 import StatCard from "../components/StatCard";
@@ -9,18 +9,30 @@ const parseVND = (value) => Number(String(value).replace(/[^\d]/g, "")) || 0;
 
 export default function Home() {
   const { data, loading, error, lastUpdated, refetch } = useCoffeeData();
+  const [stableData, setStableData] = useState([]);
 
-  const totalRecords = data.length;
+  // Stabilize data to prevent re-renders during scroll
+  useEffect(() => {
+    if (!loading && !error) {
+      setStableData(data);
+    }
+  }, [data, loading, error]);
+
+  const totalRecords = useMemo(() => stableData.length, [stableData]);
 
   const totalAmount = useMemo(
-    () => data.reduce((sum, row) => sum + parseVND(row.price), 0),
-    [data],
+    () => stableData.reduce((sum, row) => sum + parseVND(row.price), 0),
+    [stableData],
   );
 
-  const formattedTotalAmount = new Intl.NumberFormat("vi-VN", {
-    style: "currency",
-    currency: "VND",
-  }).format(totalAmount);
+  const formattedTotalAmount = useMemo(
+    () =>
+      new Intl.NumberFormat("vi-VN", {
+        style: "currency",
+        currency: "VND",
+      }).format(totalAmount),
+    [totalAmount],
+  );
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-stone-50 via-amber-50/30 to-stone-100 dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-950 transition-colors duration-300 overflow-x-hidden">
@@ -112,7 +124,7 @@ export default function Home() {
           </div>
 
           <div className="bg-white/50 dark:bg-zinc-900/50 backdrop-blur-xl rounded-3xl shadow-sm border border-zinc-200/50 dark:border-zinc-800/50 overflow-hidden">
-            <DataTable data={data} loading={loading} error={error} />
+            <DataTable data={stableData} loading={loading} error={error} />
           </div>
         </div>
       </main>

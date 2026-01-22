@@ -19,6 +19,8 @@ const HEADERS = [
 const parseCSV = (csv) => {
   const rows = csv.split("\n").filter(Boolean);
 
+  if (rows.length === 0) return [];
+
   return rows.slice(1).map((row) => {
     const values = row
       .split(/,(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)/)
@@ -54,13 +56,19 @@ export default function useCoffeeData() {
         // Parse DD/MM/YYYY format
         const parseDate = (dateStr) => {
           if (!dateStr) return new Date(0);
-          const [day, month, year] = dateStr.split('/').map(Number);
+          const [day, month, year] = dateStr.split("/").map(Number);
           return new Date(year, month - 1, day);
         };
         return parseDate(b.date) - parseDate(a.date);
       });
 
-      setData(sorted.length > 0 ? sorted.slice(0, -1) : []);
+      // FIX: Don't slice the last row unless it's empty/header
+      // Only remove if it's actually empty
+      const filtered = sorted.filter(
+        (row) => row.date || row.time || row.place || row.drink || row.price,
+      );
+
+      setData(filtered);
       setLastUpdated(new Date().toLocaleTimeString("vi-VN"));
     } catch (err) {
       setError(err.message);
