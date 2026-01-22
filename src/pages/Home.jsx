@@ -23,7 +23,7 @@ export default function Home() {
   }).format(totalAmount);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-stone-50 via-amber-50/30 to-stone-100 dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-950 transition-colors duration-300">
+    <div className="min-h-screen bg-gradient-to-br from-stone-50 via-amber-50/30 to-stone-100 dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-950 transition-colors duration-300 overflow-x-hidden">
       {/* Main */}
       <main className="container mx-auto px-4 py-12">
         {/* NEW HERO SECTION */}
@@ -101,7 +101,7 @@ export default function Home() {
         )}
 
         {/* HISTORY SECTION */}
-        <div className="space-y-6">
+        <div className="space-y-6 pb-8">
           <div className="flex items-center gap-3 px-2">
             <div className="p-2 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
               <Database size={20} />
